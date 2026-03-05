@@ -286,9 +286,10 @@ async function syncToSheet(workout) {
   try {
     const encoded = encodeURIComponent(JSON.stringify(workout));
     const url = GAS_URL + '?action=write&data=' + encoded;
-    const res = await fetch(url);
+    const res = await fetch(url, { redirect: 'follow' });
     const json = await res.json();
     console.log('sync result:', json);
+    return json;
   } catch(e) {
     console.warn('シート同期失敗:', e);
   }
