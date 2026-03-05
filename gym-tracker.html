@@ -543,7 +543,7 @@ function completeWorkout() {
 
 function saveWorkout() {
   const now = new Date();
-  const dateStr = now.toISOString().split('T')[0];
+  const dateStr = new Date(now.getTime() + 9*60*60*1000).toISOString().split('T')[0];
   const id = Date.now();
   state.workouts.push({
     id,
