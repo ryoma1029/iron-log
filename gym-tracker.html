@@ -292,10 +292,6 @@ function syncToSheet(workout) {
       resolve();
     };
     img.src = url;
-    // Also try fetch as backup
-    fetch(url, { mode: 'no-cors', redirect: 'follow' })
-      .then(() => console.log('fetch sent'))
-      .catch(e => console.warn('fetch failed:', e));
   });
 }
 
