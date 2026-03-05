@@ -282,17 +282,21 @@
 // ===== GAS API =====
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxbP8PlP_BMGlgbNj4AET9lVVMqSetMdDrdMlfs0xXoeKVa1zRdswztCl7_9HNzvxTs/exec';
 
-async function syncToSheet(workout) {
-  try {
+function syncToSheet(workout) {
+  return new Promise((resolve) => {
     const encoded = encodeURIComponent(JSON.stringify(workout));
     const url = GAS_URL + '?action=write&data=' + encoded;
-    const res = await fetch(url, { redirect: 'follow' });
-    const json = await res.json();
-    console.log('sync result:', json);
-    return json;
-  } catch(e) {
-    console.warn('シート同期失敗:', e);
-  }
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      console.log('sync sent');
+      resolve();
+    };
+    img.src = url;
+    // Also try fetch as backup
+    fetch(url, { mode: 'no-cors', redirect: 'follow' })
+      .then(() => console.log('fetch sent'))
+      .catch(e => console.warn('fetch failed:', e));
+  });
 }
 
 // ===== DATA LAYER =====
